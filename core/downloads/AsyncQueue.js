@@ -61,7 +61,7 @@ export class AsyncQueue extends EventEmitter {
     this.activeTasks = new Map();
     this._taskIdCounter = 0;
 
-    // 兼容你旧版的 options.onStatusChange 回调
+    // 兼容旧版的 options.onStatusChange 回调
     if (typeof options.onStatusChange === 'function') {
       this.on('statusChange', options.onStatusChange);
     }
