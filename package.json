@@ -15,10 +15,14 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "dexie": "^4.4.6",
+    "element-plus": "^2.14.7",
     "vue": "^3.5.43"
   },
   "devDependencies": {
     "@wxt-dev/module-vue": "^1.0.3",
+    "less": "^4.9.1",
     "typescript": "^5.9.3",
     "vite": "^8.1.5",
     "vue-tsc": "^3.2.5",
