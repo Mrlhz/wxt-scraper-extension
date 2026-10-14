@@ -1,9 +1,9 @@
-// core/taskGenerator/strategies/XiaohongshuStrategy.js
+// core/taskGenerator/extractors/XiaohongshuExtractor.js
 
-import { BaseStrategy } from './BaseStrategy';
+import { BaseExtractor } from './BaseExtractor';
 import { cleanString } from '@/core/cleaner.js';
 
-export class XiaohongshuStrategy extends BaseStrategy {
+export class XiaohongshuExtractor extends BaseExtractor {
   constructor(platform) {
     super(platform);
   }
@@ -13,7 +13,7 @@ export class XiaohongshuStrategy extends BaseStrategy {
     const item_id = rawItemId ? String(rawItemId) : '';
 
     if (!item_id || item_id === 'undefined') {
-      console.warn('[XiaohongshuStrategy] 拦截到一条没有有效 ID 的媒体任务:', rawData);
+      console.warn('[XiaohongshuExtractor] 拦截到一条没有有效 ID 的媒体任务:', rawData);
       return [];
     }
 

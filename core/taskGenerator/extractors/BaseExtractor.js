@@ -1,6 +1,6 @@
-// core/taskGenerator/strategies/BaseStrategy.js
+// core/taskGenerator/extractors/BaseExtractor.js
 
-export class BaseStrategy {
+export class BaseExtractor {
   constructor(platform) {
     this.platform = platform; // 平台标识 (如 'xhs', 'douyin')
   }
