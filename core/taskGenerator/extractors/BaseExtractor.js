@@ -6,7 +6,7 @@ export class BaseExtractor {
   }
 
   // 统一去重过滤工具方法
-  filterUrls(urls) {
+  getUniqueUrls(urls) {
     return [...new Set((urls || []).filter(Boolean))];
   }
 

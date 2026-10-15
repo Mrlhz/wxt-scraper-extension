@@ -38,7 +38,7 @@ export class XiaohongshuExtractor extends BaseExtractor {
 
   _extractVideoTasks(rawData, ctx) {
     const rawUrls = [rawData.downloadUrl, ...(rawData.downloadUrls || [])];
-    const validVideoUrls = this.filterUrls(rawUrls);
+    const validVideoUrls = this.getUniqueUrls(rawUrls);
     if (validVideoUrls.length === 0) return [];
 
     return [{
@@ -66,7 +66,7 @@ export class XiaohongshuExtractor extends BaseExtractor {
         ? [image]
         : [image.url, ...(image.downloadUrls || []), ...(image.url_list || [])];
       
-      const validImgUrls = this.filterUrls(rawImgUrls);
+      const validImgUrls = this.getUniqueUrls(rawImgUrls);
       if (validImgUrls.length === 0) return;
 
       const extension = this.getImgExtension(validImgUrls[0]);

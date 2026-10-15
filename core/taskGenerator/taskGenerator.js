@@ -1,10 +1,10 @@
 // taskGenerator.js
-import { XiaohongshuStrategy } from '@/core/taskGenerator/strategies/XiaohongshuStrategy';
+import { XiaohongshuExtractor } from '@/core/taskGenerator/extractors/XiaohongshuExtractor';
 
 // 动态策略注册表
 const strategyRegistry = {
-  'xhs': new XiaohongshuStrategy('xhs'),
-  'xiaohongshu': new XiaohongshuStrategy('xiaohongshu'),
+  'xhs': new XiaohongshuExtractor('xhs'),
+  'xiaohongshu': new XiaohongshuExtractor('xiaohongshu')
 };
 
 /**
