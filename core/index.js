@@ -11,12 +11,13 @@ import { DownloadPersister } from './DownloadPersister.js';
 import { DownloadRecoveryScheduler } from './ErrorRecoveryStrategy.js';
 import { generateMediaTasks } from './namer.js';
 import { metrics } from './metrics.js';
-import { createDownloadTask } from './downloads/index.js';
+import { createDownloadTask, EventEmitter } from './downloads/index.js';
 import { downloadsLocation, exts } from './globalConfig.js';
 import { classifyFilesExistence } from './db/check.js';
 
-export class GrabberCoreEngine {
+export class GrabberCoreEngine extends EventEmitter {
   constructor(downloadQueueInstance, serverUrl = 'http://localhost:8080/pathExists') {
+    super();
     this.queue = downloadQueueInstance; // 外部传入之前编写的带自愈的异步并发队列
     this.serverUrl = serverUrl;
     this.downloadRegistry = new Map(); // filename => 'downloading'
@@ -133,6 +134,7 @@ export class GrabberCoreEngine {
         this.persister.updateItemCompleted(platform, item_id, filename),
         this.persister.saveStatus(taskOptions, 'completed', { downloadId: res?.downloadId })
       ]);
+      this.emit('task-completed', { ...taskOptions });
     } catch (pushErr) {
       console.warn('[dispatchTask] 分发错误', pushErr, `item_id=${item_id}, filename=${filename},`, attempt);
       // 将复杂的 A/B/C/D 路径彻底委托给错误自愈策略类

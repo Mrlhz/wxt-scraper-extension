@@ -29,7 +29,7 @@ export class EventEmitter {
     return this.on(event, wrapper);
   }
 
-  _emit(event, ...args) {
+  emit(event, ...args) {
     const listeners = this._events.get(event);
     if (!listeners) return;
     for (const listener of listeners) {
@@ -105,17 +105,17 @@ export class AsyncQueue extends EventEmitter {
     };
     
     // 触发标准的全局状态事件
-    this._emit('statusChange', status);
-    this._emit('next', status);
+    this.emit('statusChange', status);
+    this.emit('next', status);
 
     // 检查是否满足 empty 状态条件（排队队列清空）
     if (this.queue.length === 0) {
-      this._emit('empty', status);
+      this.emit('empty', status);
     }
 
     // 检查是否满足 idle 状态条件（完全空闲）
     if (this.activeCount === 0 && this.queue.length === 0) {
-      this._emit('idle', status);
+      this.emit('idle', status);
     }
   }
 
@@ -137,7 +137,7 @@ export class AsyncQueue extends EventEmitter {
       }
       this.queue.splice(low, 0, item);
 
-      this._emit('add');
+      this.emit('add');
       this._notify();
       this._next();
     });
@@ -159,7 +159,7 @@ export class AsyncQueue extends EventEmitter {
       const taskContext = { signal, controller, onQueuePause: () => {}, onQueueResume: () => {} };
       this.activeTasks.set(currentTaskId, taskContext);
       
-      this._emit('active');
+      this.emit('active');
       this._notify();
 
       let timer = null;
@@ -201,7 +201,7 @@ export class AsyncQueue extends EventEmitter {
           this.activeTasks.delete(currentTaskId);
           this.activeCount = Math.max(0, this.activeCount - 1);
           
-          this._emit('completed');
+          this.emit('completed');
           this._notify();
           this._next(); // 驱动下一个任务
         });
@@ -239,7 +239,7 @@ export class AsyncQueue extends EventEmitter {
     this.activeTasks.clear();
     this.activeCount = 0;
 
-    this._emit('clear');
+    this.emit('clear');
     // 4. 同步UI状态
     this._notify();
     
@@ -250,7 +250,7 @@ export class AsyncQueue extends EventEmitter {
     if (this.isPaused) return;
     this.isPaused = true; 
     this.activeTasks.forEach(t => t.onQueuePause());
-    this._emit('pause');
+    this.emit('pause');
     this._notify(); 
   }
   
@@ -258,7 +258,7 @@ export class AsyncQueue extends EventEmitter {
     if (!this.isPaused) return; 
     this.isPaused = false; 
     this.activeTasks.forEach(t => t.onQueueResume());
-    this._emit('resume');
+    this.emit('resume');
     this._notify(); 
     this._next(); 
   }
